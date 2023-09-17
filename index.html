@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cars Application</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f2f2f2;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+
+      .container {
+        max-width: 400px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        color: #333;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        transition: border-color 0.3s ease;
+      }
+
+      input[type="text"]:focus {
+        outline: none;
+        border-color: #007bff;
+      }
+
+      button {
+        background-color: #007bff;
+        color: #fff;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      li {
+        background-color: #f9f9f9;
+        padding: 10px;
+        margin-bottom: 5px;
+        border-radius: 3px;
+        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        animation: fadeIn 0.5s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Queue Application</h1>
+
+    <div class="container">
+      <label for="brand">Brand:</label>
+      <input type="text" id="brand" placeholder="Enter brand" />
+
+      <label for="model">Model:</label>
+      <input type="text" id="model" placeholder="Enter model" />
+
+      <label for="number">Number:</label>
+      <input type="text" id="number" placeholder="Enter number" />
+
+      <button onclick="addToQueue()">Add to Queue</button>
+      <button onclick="removeFromQueue()">Remove from Queue</button>
+
+      <h2>Queue:</h2>
+      <ul id="queue-display"></ul>
+    </div>
+
+    <script>
+      class Element {
+        constructor(brand, model, number) {
+          this.brand = brand;
+          this.model = model;
+          this.number = number;
+        }
+      }
+
+      class Queue {
+        constructor() {
+          this.items = [];
+          this.count = 0;
+        }
+
+        push(item) {
+          this.items.push(item);
+          this.count = this.count + 1;
+        }
+
+        pop() {
+          if (this.count > 0) {
+            this.count = this.count - 1;
+          }
+          return this.items.shift();
+        }
+
+        viewAll() {
+          return this.items;
+        }
+      }
+
+      const carQueue = new Queue();
+
+      function addToQueue() {
+        const brand = document.getElementById("brand").value;
+        const model = document.getElementById("model").value;
+        const number = document.getElementById("number").value;
+
+        const car = new Element(brand, model, number);
+        carQueue.push(car);
+
+        clearInputs();
+        displayQueue();
+      }
+
+      function removeFromQueue() {
+        carQueue.pop();
+        displayQueue();
+      }
+
+      function clearInputs() {
+        document.getElementById("brand").value = "";
+        document.getElementById("model").value = "";
+        document.getElementById("number").value = "";
+      }
+
+      function displayQueue() {
+        const queueDisplay = document.getElementById("queue-display");
+        queueDisplay.innerHTML = ""; // Clear previous entries
+
+        const cars = carQueue.viewAll();
+        cars.forEach((car) => {
+          const listItem = document.createElement("li");
+          listItem.textContent = `Brand: ${car.brand}, Model: ${car.model}, Number: ${car.number}`;
+          queueDisplay.appendChild(listItem);
+        });
+      }
+
+      // Initial display
+      displayQueue();
+    </script>
+  </body>
+</html>
